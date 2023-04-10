@@ -1,3 +1,60 @@
+import random
+import math
+import sys
+
+class PrivateKey(object):
+	def __init__(self, p=None, g=None, x=None):
+		self.p = p
+		self.g = g
+		self.x = x
+		
+
+class PublicKey(object):
+	def __init__(self, p=None, g=None, h=None):
+		self.p = p
+		self.g = g
+		self.h = h
+
+def generator(q):
+	b=False
+	while(not b):
+		g=random.randint(2,(q-1)//2)
+		if(math.gcd(g,q)==1):
+			return g
+
+
+def generateKey(tailleBit):
+	p=2**(tailleBit)
+	g=generator(p) #generateur de z/zp
+	x = random.randint( 1, p - 1 )
+	h = pow( g, x, p )
+	publicKey = PublicKey(p, g, h)
+	privateKey = PrivateKey(p, g, x)
+
+	return {privateKey, publicKey}
+
+
+def encrypt(publicK,message) :
+	
+	r = random.randint( 0, publicK.p )
+				#c = g**r mod p
+	c1 = pow( publicK.g, r, publicK.p )
+	c2=pow(publicK.g,m,publicK.p)*pow(publicK.h,r,publicK.p)
+	return (c1,c2)
+
+def encryptBinary(publicK,message):
+	binar=message.bin()
+	binarEnc= []
+	for i in binar:
+		binarEnc.append(encrypt(publicK,binar[i]))
+
+	return binarEnc
+
+
+def decrypt(publicK,chiffre): #Comment on partage le secret?
+
+def CGate(X,Y):
+
 def AddBits(x,y):
     x0=x[0]
     y0=y[0]
